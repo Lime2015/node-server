@@ -1,5 +1,6 @@
 var passport = require("passport");
 var express =  require("express");
+var bodyParser = require('body-parser');
 var KakaoStrategy = require("passport-kakao").Strategy;
 var requestKakaoLogin = require('request');
 
@@ -29,13 +30,23 @@ passport.deserializeUser(function(obj, done) {
 
 // express 앱 설정
 var app = express();
+app.use(bodyParser());
 app.use(passport.initialize());
-app.get("/login", passport.authenticate('kakao',{state: "myStateValue"}));
+app.get("/login", passport.authenticate('kakao',{state: "myStateValue"}), function(req, res){
+  console.log(">>reqest login page")
+});
+
+
+
+
 app.post("/kakao-login", function(req, res){
   var result;
   var isWait = true;
-  console.log(">>kakao-login request:" + req.email + "/" + req.password);
-  requestKakaoLogin('https://kauth.kakao.com/oauth/authorize?client_id=' + appKey + '&redirect_uri=' + redirectUrl + '&response_type=code', function (error, response, body) {
+  var email = req.body.email;
+  var password = req.body.password;
+  console.log(">>kakao-login request:" + email + "/" + password);
+  requestKakaoLogin('https://kauth.kakao.com/oauth/authorize?client_id=' + appKey + '&redirect_uri=' + redirectUrl + '&response_type=code',
+        function (error, response, body) {
     // if (!error && response.statusCode == 200) {
     //   console.log(body); // Print the body of response.
     // }
