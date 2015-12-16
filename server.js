@@ -32,38 +32,32 @@ passport.deserializeUser(function(obj, done) {
 var app = express();
 app.use(bodyParser());
 app.use(passport.initialize());
-app.get("/login", passport.authenticate('kakao',{state: "myStateValue"}), function(req, res){
-  console.log(">>reqest login page")
-});
-
-
-
-
-app.post("/kakao-login", function(req, res){
-  var result;
-  var isWait = true;
-  var email = req.body.email;
-  var password = req.body.password;
-  console.log(">>kakao-login request:" + email + "/" + password);
-  requestKakaoLogin('https://kauth.kakao.com/oauth/authorize?client_id=' + appKey + '&redirect_uri=' + redirectUrl + '&response_type=code',
-        function (error, response, body) {
-    // if (!error && response.statusCode == 200) {
-    //   console.log(body); // Print the body of response.
-    // }
-    // console.log(body);
-    // res.send("result:" + response);
-
-    console.log("<<kakao-login return:" + response);
-    result = body;
-    isWait = false;
-  });
-
-  while (isWait) {
-    require('deasync').sleep(100);
-  }
-
-  res.send(result);
-});
+app.get("/login", passport.authenticate('kakao',{state: "myStateValue"}));
+// app.post("/kakao-login", function(req, res){
+//   var result;
+//   var isWait = true;
+//   var email = req.body.email;
+//   var password = req.body.password;
+//   console.log(">>kakao-login request:" + email + "/" + password);
+//   requestKakaoLogin('https://kauth.kakao.com/oauth/authorize?client_id=' + appKey + '&redirect_uri=' + redirectUrl + '&response_type=code',
+//         function (error, response, body) {
+//     // if (!error && response.statusCode == 200) {
+//     //   console.log(body); // Print the body of response.
+//     // }
+//     // console.log(body);
+//     // res.send("result:" + response);
+//
+//     console.log("<<kakao-login return:" + response);
+//     result = body;
+//     isWait = false;
+//   });
+//
+//   while (isWait) {
+//     require('deasync').sleep(100);
+//   }
+//
+//   res.send(result);
+// });
 app.get("/oauth", passport.authenticate('kakao'), function(req, res){
     // 로그인 시작시 state 값을 받을 수 있음
     res.send("state :" + req.query.state);
