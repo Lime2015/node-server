@@ -5,12 +5,12 @@ var KakaoStrategy = require("passport-kakao").Strategy;
 var requestKakaoLogin = require('request');
 
 var appKey = "acd16274636c8807be1f6e2aa436ae52";
-var redirectUrl = "http://localhost:3000/oauth";
+var redirectUrl = "http://52.69.102.82:3000/oauth";
 
 // passport 에 Kakao Oauth 추가
 passport.use( new KakaoStrategy({
         clientID: 'acd16274636c8807be1f6e2aa436ae52',
-        callbackURL: "http://localhost:3000/oauth"
+        callbackURL: "http://52.69.102.82:3000/oauth"
     },
     function(accessToken, refreshToken, params, profile, done){
         // authorization 에 성공했을때의 액션
